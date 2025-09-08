@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Magistère - Réseau des Concepteurs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        /* Styles pour l'impression PDF */
+        @media print {
+            body { margin: 0; }
+            .page-break { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+            .header { position: fixed; top: 0; width: 100%; }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #fff;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
+        }
+        
+        .header-main {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .header-main h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-main .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #4a5568;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+        
+        h4 {
+            color: #667eea;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        p {
+            margin: 0.8rem 0;
+            text-align: justify;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 0.5rem;
+        }
+        
+        .card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .card.highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border-left: 4px solid #667eea;
+        }
+        
+        .card.warning {
+            background: #fef5e7;
+            border-left: 4px solid #f6ad55;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .checklist li::before {
+            content: "☐ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .url-box {
+            background: #e6fffa;
+            border: 1px solid #38b2ac;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .url-box strong {
+            color: #2c7a7b;
+        }
+        
+        .url-box code {
+            background: #38b2ac;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .etapes {
+            counter-reset: etape-counter;
+        }
+        
+        .etape {
+            counter-increment: etape-counter;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .etape h4::before {
+            content: "ÉTAPE " counter(etape-counter) " : ";
+            color: #667eea;
+            font-weight: 700;
+        }
+        
+        .etape-1 { background: #f0fff4; border-left-color: #48bb78; }
+        .etape-2 { background: #fffaf0; border-left-color: #ed8936; }
+        .etape-3 { background: #faf5ff; border-left-color: #9f7aea; }
+        .etape-4 { background: #f0f9ff; border-left-color: #4299e1; }
+        
+        .important {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .important::before {
+            content: "⚠️ IMPORTANT : ";
+            font-weight: 700;
+            color: #c53030;
+        }
+        
+        .objectif {
+            background: #e6fffa;
+            border: 2px solid #38b2ac;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: 600;
+            color: #2c7a7b;
+        }
+        
+        .objectif::before {
+            content: "🎯 Objectif : ";
+            font-weight: 700;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-style: italic;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-main">
+        <h1>📑 Formation Magistère – Réseau des Concepteurs</h1>
+        <div class="subtitle">Castelsarrasin | 3 heures de formation</div>
+    </div>
+
+    <div class="card highlight no-break">
+        <h2><span class="emoji">🎯</span>Public cible et encadrement</h2>
+        <div class="two-columns">
+            <div>
+                <h3>Participants</h3>
+                <p><strong>Conseillers pédagogiques du 1er degré</strong></p>
+            </div>
+            <div>
+                <h3>Équipe d'encadrement</h3>
+                <ul>
+                    <li>3 chargés de mission DRANE</li>
+                    <li>2-3 personnes en soutien</li>
+                </ul>
+            </div>
+        </div>
+        <div class="objectif">
+            Reproduire et construire un parcours fonctionnel minimal dans Magistère
+        </div>
+    </div>
+
+    <div class="no-break">
+        <h2><span class="emoji">🎯</span>Objectifs d'apprentissage</h2>
+        <p>À l'issue de cette formation, les participants seront capables de :</p>
+        <ol>
+            <li><strong>Comprendre la logique des outils</strong>
+                <ul>
+                    <li>RDC (Réseau des Concepteurs) = Je conçois</li>
+                    <li>Magistère = Je joue et j'anime</li>
+                </ul>
+            </li>
+            <li><strong>Maîtriser la création collaborative</strong>
+                <ul>
+                    <li>Créer une équipe de conception</li>
+                    <li>Mettre en place un "Bac à sable – [Nom de l'équipe]"</li>
+                    <li>Inscrire tous les membres de l'équipe</li>
+                </ul>
+            </li>
+            <li><strong>Utiliser ABC Learning Design</strong>
+                <ul>
+                    <li>Découvrir l'outil développé à Reims</li>
+                    <li>Scénariser une formation</li>
+                </ul>
+            </li>
+            <li><strong>Reproduire et/ou construire un parcours fonctionnel</strong>
+                <ul>
+                    <li>Réussir au minimum l'Étape 1 de conception</li>
+                    <li>Publier une formation opérationnelle</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="no-break">
+        <h2><span class="emoji">⏱️</span>Architecture de la formation (3h)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Temps</th>
+                    <th>Durée</th>
+                    <th>Contenu</th>
+                    <th>Format</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Temps 0</strong></td>
+                    <td>10 min</td>
+                    <td>Accueil & cadrage</td>
+                    <td>Plénière</td>
+                </tr>
+                <tr>
+                    <td><strong>Temps 1</strong></td>
+                    <td>25-40 min</td>
+                    <td>Écosystème RDC/Magistère</td>
+                    <td>Présentation + Atelier 1</td>
+                </tr>
+                <tr>
+                    <td><strong>Temps 2</strong></td>
+                    <td>30-40 min</td>
+                    <td>ABC Learning Design</td>
+                    <td>Présentation + Atelier 2</td>
+                </tr>
+                <tr>
+                    <td><strong>Temps 3</strong></td>
+                    <td>1h20-1h40</td>
+                    <td>Conception Magistère</td>
+                    <td>Atelier 3 (4 étapes)</td>
+                </tr>
+                <tr>
+                    <td><strong>Bilan</strong></td>
+                    <td>10-15 min</td>
+                    <td>Mutualisation & feedback</td>
+                    <td>Plénière</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card no-break">
+        <h2><span class="emoji">🌐</span>Environnements de travail</h2>
+        <div class="url-box">
+            <strong>Réseau des Concepteurs (RDC)</strong><br>
+            URL : <code>https://communs.magistere.apps.education.fr</code><br>
+            Usage : Conception collaborative (équipes, conceptions, publication)
+        </div>
+        <div class="url-box">
+            <strong>Magistère Académique</strong><br>
+            URL : <code>https://toulouse.magistere.apps.education.fr</code><br>
+            Usage : Animation et diffusion (espaces publiés, parcours actifs)
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2><span class="emoji">📋</span>Programme détaillé</h2>
+
+    <div class="card">
+        <h3>TEMPS 1 : Découverte du nouvel écosystème <em>(25-40 min)</em></h3>
+        
+        <h4>Présentation <em>(10-15 min)</em></h4>
+        <p><strong>Évolutions majeures de Magistère :</strong></p>
+        <ul>
+            <li>Duplication facilitée</li>
+            <li>Autonomie accrue des concepteurs</li>
+            <li>Grains courts privilégiés</li>
+            <li>Engagement renforcé des apprenants</li>
+            <li>Conception sur mesure</li>
+        </ul>
+        
+        <div class="card highlight">
+            <strong>Nouveau paradigme :</strong><br>
+            <strong>1 plateforme → 2 environnements</strong><br>
+            • <strong>RDC</strong> = Je conçois mes formations<br>
+            • <strong>Magistère local</strong> = Je joue et j'anime mes formations
+        </div>
+        
+        <h4>Atelier 1 <em>(15-20 min)</em></h4>
+        <p><strong>Mise en pratique :</strong></p>
+        <ol>
+            <li>Création d'une équipe de conception</li>
+            <li>Création d'une conception "Bac à sable – [Nom de l'équipe]"</li>
+            <li>Inscription de tous les membres</li>
+            <li>Vérification du bon fonctionnement</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h3>TEMPS 2 : Scénarisation avec ABC Learning Design <em>(30-40 min)</em></h3>
+        
+        <h4>Présentation <em>(15 min)</em></h4>
+        <p><strong>L'importance de la scénarisation :</strong></p>
+        <ul>
+            <li><strong>Avec scénarisation :</strong> Cohérence, charge cognitive maîtrisée, motivation renforcée</li>
+            <li><strong>Sans scénarisation :</strong> Risque d'incohérence et de surcharge</li>
+        </ul>
+        
+        <p><strong>Les 3 niveaux de design :</strong></p>
+        <ul>
+            <li><strong>Macrodesign :</strong> Plan global de la formation</li>
+            <li><strong>Microdesign :</strong> Détail des activités pédagogiques</li>
+            <li><strong>Implémentation :</strong> Mise en œuvre technique</li>
+        </ul>
+        
+        <div class="card highlight">
+            <strong>Exemple concret :</strong> Scénario "CUA cycle 3"<br>
+            • 6 sections structurées<br>
+            • 2 ressources documentaires<br>
+            • 5 activités diversifiées
+        </div>
+        
+        <h4>Atelier 2 <em>(15-20 min)</em></h4>
+        <p><strong>Prise en main d'ABC Learning Design :</strong></p>
+        <ol>
+            <li>Connexion à l'outil Reims ABC LD</li>
+            <li>Reproduction du scénario modèle "CUA cycle 3"</li>
+            <li>Exploration des visuels et onglets</li>
+            <li>Association intentions pédagogiques ↔ activités</li>
+            <li><strong>Bonus :</strong> Exploration du tableur CMO (si temps disponible)</li>
+        </ol>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="card">
+        <h3>TEMPS 3 : Atelier de conception Magistère <em>(1h20-1h40)</em></h3>
+        <div class="objectif">
+            Créer un parcours fonctionnel avec 4 étapes de difficulté croissante
+        </div>
+        
+        <div class="etapes">
+            <div class="etape etape-1">
+                <h4>Socle incontournable <em>(OBLIGATOIRE)</em></h4>
+                <p><strong>Éléments à créer :</strong></p>
+                <ul>
+                    <li><strong>Section Accueil :</strong> Présentation du parcours</li>
+                    <li><strong>Section Apprentissage :</strong> 1 ressource clé en main + 1 Test QCM fourni</li>
+                    <li><strong>Section Module :</strong> Mini-grain ≤ 15 min avec exercice technique</li>
+                    <li><strong>Publication :</strong> Publier la conception et vérifier son apparition dans Magistère</li>
+                </ul>
+            </div>
+            
+            <div class="etape etape-2">
+                <h4>Enrichissements possibles <em>(AU CHOIX)</em></h4>
+                <p><strong>Options d'amélioration :</strong></p>
+                <ul>
+                    <li>Forum collaboratif</li>
+                    <li>Classe virtuelle (BigBlueButton)</li>
+                    <li>Évaluation (Sticky Notes)</li>
+                </ul>
+            </div>
+            
+            <div class="etape etape-3">
+                <h4>Approfondissement</h4>
+                <p><strong>Extensions avancées :</strong></p>
+                <ul>
+                    <li>Ajout d'une 2ᵉ section Apprentissage (PDF fourni + Test)</li>
+                    <li>Intégration H5P simple (optionnel)</li>
+                </ul>
+            </div>
+            
+            <div class="etape etape-4">
+                <h4>Parcours complet</h4>
+                <p><strong>Reconstitution complète :</strong></p>
+                <ul>
+                    <li>Section Accueil</li>
+                    <li>2 sections Apprentissage</li>
+                    <li>Section Module</li>
+                    <li>Forum collaboratif</li>
+                    <li>Classe virtuelle</li>
+                    <li>Évaluation finale</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="important">
+            Dépublier la conception en fin d'atelier (obligatoire)
+        </div>
+    </div>
+
+    <div class="no-break">
+        <h2><span class="emoji">📊</span>Critères de réussite</h2>
+        <div class="two-columns">
+            <div class="card">
+                <h3>Réussite minimale</h3>
+                <ul class="checklist">
+                    <li>Étape 1 complétée et fonctionnelle</li>
+                    <li>Parcours publié et visible dans Magistère</li>
+                    <li>Équipe constituée et opérationnelle</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Réussite optimale</h3>
+                <ul class="checklist">
+                    <li>Étapes 2-4 explorées selon le rythme</li>
+                    <li>Scénarisation ABC Learning Design maîtrisée</li>
+                    <li>Conception dépubliée en fin de session</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card no-break">
+        <h2><span class="emoji">🔧</span>Ressources et outils</h2>
+        <div class="two-columns">
+            <div>
+                <h3>Outils techniques</h3>
+                <ul>
+                    <li>Accès RDC et Magistère</li>
+                    <li>ABC Learning Design (Reims)</li>
+                    <li>Ressources fournies (QCM, PDF, contenus)</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Support pédagogique</h3>
+                <ul>
+                    <li>Guide pas-à-pas pour chaque étape</li>
+                    <li>Ressources prêtes à l'emploi</li>
+                    <li>Accompagnement individualisé</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Formation conçue pour une montée en compétences progressive et adaptée au rythme de chaque participant.
+    </div>
+</body>
+</html>
